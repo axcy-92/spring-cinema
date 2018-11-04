@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/resources/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/resources/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/import-file.js}"></script>
+    <title>Spring Cinema</title>
+</head>
+<body>
+    <nav th:replace="header :: header"></nav>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Import Users and Events</h1>
+        </div>
+        <div th:if="${messages}" class="alert alert-info">
+            <p th:each="message : ${messages}" th:text="${message}"></p>
+            <br/>
+            <p> See <a th:href="@{/event/all}">events</a></p>
+            <p> See <a th:href="@{/user/all}">users</a></p>
+        </div>
+        <h3>Upload *.json files:</h3>
+        <form id="importFileForm" role="form" method="POST" enctype="multipart/form-data" th:action="@{/import}">
+            <div class="form-group">
+                <p>Upload *.json files:</p>
+            </div>
+            <div class="form-group add-file">
+                <button id="addFile" type="button" class="btn btn-default">Add File</button>
+            </div>
+            <button type="submit" class="btn btn-success">Import</button>
+        </form>
+    </div>
+    <hr/>
+    <footer th:replace="footer :: footer"></footer>
+</body>
+</html>

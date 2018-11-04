@@ -1,0 +1,21 @@
+{
+    "type" : {
+        "typeField" : "EVENTS"
+    },
+    "events" : [
+        {
+            "name" : "Terminator 6",
+            "ticketPrice" : "150.0",
+            "rating" : "LOW",
+            "dateTime": "2016-01-15T22:00",
+            "auditorium": 1
+        },
+        {
+            "name" : "Star Wars 12",
+            "ticketPrice" : "1500.0",
+            "rating" : "HIGH",
+            "dateTime": "2016-02-23T13:00",
+            "auditorium": 2
+        }
+    ]
+}

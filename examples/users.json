@@ -1,0 +1,21 @@
+{
+    "type" : {
+        "typeField" : "USERS"
+    },
+    "users" : [
+        {
+            "name" : "Ivan",
+            "email" : "ivan@mail.com",
+            "birthday" : "1999-01-01",
+            "password" : "qwerty",
+            "roles" : ["REGISTERED_USER"]
+        },
+        {
+            "name" : "Petr",
+            "email" : "petr@mail.com",
+            "birthday" : "1999-01-01",
+            "password" : "asdfgh",
+            "roles" : ["REGISTERED_USER", "BOOKING_MANAGER"]
+        }
+    ]
+}

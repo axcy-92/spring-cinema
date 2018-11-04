@@ -1,0 +1,33 @@
+/**
+ * Profile image component
+ */
+.profile-header-container{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-header-img > img.img-circle {
+    border: 2px solid #51D2B7;
+}
+
+/**
+ * Account balance component
+ */
+.balance-label-container {
+    margin-top: -59px;
+    text-align: center;
+}
+
+.label-default.balance-label {
+    padding: 5px 10px 5px 10px;
+    border-radius: 27px;
+    background-color: #13BBB6;
+    border: solid #FFFFFF;
+}
+.label-default.balance-label:after {
+    content: "$";
+}
+
+.select-roles {
+    margin-bottom: 15px;
+}

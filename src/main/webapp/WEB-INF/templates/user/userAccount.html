@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/resources/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/css/user-info.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/resources/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/user-account.js}"></script>
+    <title>Spring Cinema</title>
+</head>
+<body>
+<nav th:replace="header :: header"></nav>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Top Up Account</h1>
+        <p>You can cheat money :)</p>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Amount of Payment</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" id="payment-form" th:action="@{__${#httpServletRequest.requestURI}__}" method="POST" data-toggle="validator">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="cash">Enter the amount of money</label>
+                                    <div class="input-group">
+                                        <input type="number" min="0" id="cash" name="cash" class="form-control" pattern="/^\d+$/" required="required" autofocus="autofocus"/>
+                                        <input type="hidden" name="account" class="form-control" th:value="${userAccountId}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <button class="btn btn-success btn-lg btn-block" type="submit">Submit Payment</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Payment Details</h3>
+                </div>
+                <div class="panel-body">
+                    <img class="pull-right" th:src="@{/resources/img/cards.png}"/>
+                    <form role="form" id="credit-form">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="cardNumber">CARD NUMBER</label>
+                                    <div id="cardNumber" class="input-group">
+                                        <input type="text" class="form-control" name="cardNumber" placeholder="Valid Card Number" data-stripe="number"/>
+                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-7 col-md-7">
+                                <div class="form-group">
+                                    <label for="expMonth">EXPIRATION DATE</label>
+                                    <div id="expMonth" class="col-xs-6 col-lg-6 pl-ziro">
+                                        <input type="text" class="form-control" name="expMonth" placeholder="MM" required="" data-stripe="exp_month"/>
+                                    </div>
+                                    <div class="col-xs-6 col-lg-6 pl-ziro">
+                                        <input type="text" class="form-control" name="expYear" placeholder="YY" required="" data-stripe="exp_year"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-md-5 pull-right">
+                                <div class="form-group">
+                                    <label for="cvCode">CV CODE</label>
+                                    <input id="cvCode" type="password" class="form-control" name="cvCode" placeholder="CV" required="" data-stripe="cvc"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="couponCode">COUPON CODE</label>
+                                    <input id="couponCode" type="text" class="form-control" name="couponCode"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/resources/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/css/user-info.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/resources/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/user-page.js}"></script>
+    <title>Spring Cinema</title>
+</head>
+<body>
+    <nav th:replace="header :: header"></nav>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Personal Info</h1>
+            <p>Information about your profile</p>
+        </div>
+        <div class="row">
+            <div th:if="${error}" class="alert alert-danger alert-dismissable">
+                <a class="panel-close close" data-dismiss="alert">×</a>
+                <span class="glyphicon glyphicon-warning-sign"></span>
+               <span th:text="${error}"></span>
+            </div>
+            <div th:if="${message}" class="alert alert-info alert-dismissable">
+                <a class="panel-close close" data-dismiss="alert">×</a>
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <span th:text="${message}"></span>
+            </div>
+            <!-- left column -->
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="profile-header-container">
+                    <div class="profile-header-img">
+                        <img th:if="${isManager}"
+                             th:src="@{/resources/img/default-avatar-admin.png}"
+                             class="avatar img-circle img-thumbnail" alt="avatar"/>
+                        <img th:unless="${isManager}"
+                             th:src="@{/resources/img/default-avatar-user.png}"
+                             class="avatar img-circle img-thumbnail" alt="avatar"/>
+                        <!-- account balance info -->
+                        <div class="balance-label-container">
+                            <h1>
+                                <span class="label label-default balance-label" th:text="${cash}">0</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center" th:if="${userForm.id} == ${#authentication.principal.id}">
+                    <a class="btn btn-success btn-xs" th:href="'/user/top-up-account/' + ${userForm.id}">Top Up Account</a>
+                </div>
+            </div>
+            <!-- edit form column -->
+            <form th:action="@{/user/update}" method="POST" class="form-horizontal" role="form" th:object="${userForm}" data-toggle="validator">
+                <input id="id" class="form-control" th:field="*{id}" type="hidden"/>
+                <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+                    <div class="form-group">
+                        <label for="name" class="col-lg-3 control-label">Username:</label>
+                        <div class="col-lg-8">
+                            <input id="name" class="form-control user-field" th:field="*{name}" type="text" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-lg-3 control-label">Email:</label>
+                        <div class="col-lg-8">
+                            <input id="email" class="form-control user-field" th:field="*{email}" type="text" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday" class="col-md-3 control-label">Birthday:</label>
+                        <div class="col-md-8">
+                            <input id="birthday" class="form-control user-field" th:field="*{birthday}" type="date" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group roles" sec:authorize="hasRole('BOOKING_MANAGER')">
+                        <input type="hidden" name="role" th:value="*{roles[0]}"/>
+                        <div th:each="role,iterStat : *{roles}" th:class="${iterStat.index} == 0 ? 'role-group default-role' : 'role-group'">
+                            <label th:for="'role_' + ${iterStat.index}" class="col-md-3 control-label"
+                                   th:text="'Role ' + ${iterStat.index+1} + ':'">Role:</label>
+                            <div th:if="${iterStat.index} == 0" th:remove="tag">
+                                <div class="col-md-8 select-roles">
+                                    <select th:id="'role_' + ${iterStat.index}" class="form-control" disabled="true">
+                                        <option th:each="roleItem,itemIndex : ${roleList}" th:value="${roleItem}" th:selected="${itemIndex.index} == 0">
+                                            <p th:text="${roleItem}">-</p>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1 only-edit-mode">
+                                    <button th:if="${iterStat.size >= 2}" class="btn btn-remove btn-default-role btn-danger only-edit-mode hidden" type="button">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                    <button th:if="${iterStat.size} &lt; 2" class="btn btn-success btn-add btn-default-role only-edit-mode hidden" type="button">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div th:if="${iterStat.index} &gt; 0" th:remove="tag">
+                                <div class="col-md-8 select-roles">
+                                    <select th:id="'role_' + ${iterStat.index}" name="role" class="form-control user-field" readonly="readonly">
+                                        <option th:each="roleItem : ${roleList}" th:value="${roleItem}" th:selected="${roleItem.getDesc()} == ${role.name}">
+                                            <p th:text="${roleItem}">-</p>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1 only-edit-mode">
+                                    <button th:if="${iterStat.index+1} == ${iterStat.size}" class="btn btn-success btn-add only-edit-mode hidden" type="button">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group only-edit-mode hidden">
+                        <label for="password" class="col-md-3 control-label">Password:</label>
+                        <div class="col-md-8">
+                            <input id="password" class="form-control user-field" th:field="*{password}" type="password" required="required"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="view-mode">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-8">
+                                <button th:if="(${userForm.id} == ${#authentication.principal.id}) or ${#authentication.principal.isManager()}" id="edit" type="button" class="btn btn-primary">Edit</button>
+                                <span></span>
+                                <button type="button" class="btn btn-inverse" onclick="window.history.back()">Back</button>
+                            </div>
+                        </div>
+                        <div th:if="(${userForm.id} == ${#authentication.principal.id}) or ${#authentication.principal.isManager()}" class="edit-mode hidden">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-8">
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                <span></span>
+                                <button id="cancel" type="button" class="btn btn-default">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

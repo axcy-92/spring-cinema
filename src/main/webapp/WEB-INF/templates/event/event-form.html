@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/resources/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/resources/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <title>Spring Cinema</title>
+</head>
+<body>
+    <nav th:replace="header :: header"></nav>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 th:text="${action} + ' Event'"></h1>
+            <p th:text="'Fill form for ' + ${action} + ' event'"></p>
+        </div>
+        <form role="form" th:action="@{/event/add}" th:object="${eventForm}" method="POST" data-toggle="validator">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" th:field="*{name}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="ticketPrice">Ticket Price:</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="ticketPrice" th:field="*{ticketPrice}" pattern="/^\d+$/" required="required"/>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-usd"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="rating">Select rating:</label>
+                <select class="form-control" id="rating" th:field="*{rating}">
+                    <option th:value="${rating}" th:each="rating : ${ratingList}"
+                    th:selected="*{rating} == ${rating}">
+                        <p th:text="${rating.name()}">-</p>
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="auditoriumId">Select auditorium:</label>
+                <select class="form-control" id="auditoriumId" name="auditoriumId">
+                    <option th:each="auditorium : ${auditoriumList}"
+                            th:value="${auditorium.id}"
+                            th:selected="${auditorium.id == eventAuditoriumId}">
+                        <p th:text="${auditorium.name}">-</p>
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dateTime">Date:</label>
+                <div class="input-group date">
+                    <input type="datetime-local" class="form-control" id="datetime"  th:field="*{dateTime}"/>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-inverse" onclick="window.history.back()">Back</button>
+        </form>
+    </div>
+    <hr/>
+    <footer th:replace="footer :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/resources/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <title>Spring Cinema</title>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="@{/}" href="#">Spring Cinema</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li sec:authorize="isAuthenticated()">
+                        <a th:href="@{/booking}">
+                            <span class="glyphicon glyphicon-barcode"></span>
+                            Book ticket
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <span class="glyphicon glyphicon-film"></span>Events<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/event/all}">Show all</a></li>
+                            <li sec:authorize="hasRole('BOOKING_MANAGER')"><a th:href="@{/event/add}">Create new</a></li>
+                        </ul>
+                    </li>
+                    <li sec:authorize="hasRole('BOOKING_MANAGER')">
+                        <a th:href="@{/user/all}">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Users
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('BOOKING_MANAGER')">
+                        <a th:href="@{/import}">
+                            <span class="glyphicon glyphicon-import"></span>
+                            Import files
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}">
+                            <span class="glyphicon glyphicon-log-in"></span>
+                            Sign in
+                        </a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a th:href="@{/user/sign-up}">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Sign up
+                        </a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img sec:authorize="hasRole('BOOKING_MANAGER')" th:src="@{/resources/img/default-avatar-admin.png}" class="img-circle" height="30" width="30"/>
+                            <img sec:authorize="!hasRole('BOOKING_MANAGER')" th:src="@{/resources/img/default-avatar-user.png}" class="img-circle" height="30" width="30"/>
+                            <span></span>
+                            <strong sec:authentication="name">Anonymous</strong>
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div class="navbar-login" style="width: 305px; padding: 10px; padding-bottom: 0px">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <p class="text-center">
+                                                <img sec:authorize="hasRole('BOOKING_MANAGER')" th:src="@{/resources/img/default-avatar-admin.png}" class="img-rounded" height="87" width="87"/>
+                                                <img sec:authorize="!hasRole('BOOKING_MANAGER')" th:src="@{/resources/img/default-avatar-user.png}" class="img-rounded" height="87" width="87"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <p class="text-left"><strong sec:authentication="name">Anonymous</strong></p>
+                                            <p class="text-left small" sec:authentication="principal.email"></p>
+                                            <p class="text-left">
+                                                <a th:href="@{/user/} + ${#authentication.principal.id}" class="btn btn-primary btn-block btn-sm">Personal Info</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="navbar-login navbar-login-session" style="padding: 10px; padding-bottom: 0px;padding-top: 0px">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <p>
+                                                <a href="javascript:document.getElementById('logout').submit()" class="btn btn-danger btn-block">
+                                                    <span class="glyphicon glyphicon-log-out"></span>
+                                                    <span>Logout</span>
+                                                </a>
+                                                <form id="logout" th:action="@{/logout}" method="post" >
+                                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                                </form>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

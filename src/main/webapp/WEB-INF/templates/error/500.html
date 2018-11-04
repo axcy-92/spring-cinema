@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/resources/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <title>Spring Cinema</title>
+</head>
+<body>
+    <nav th:replace="header :: header"></nav>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>OOPS!</h1>
+            <p>We're sorry, but <span th:text="${exception.getMessage()}"> something went wrong...</span></p>
+        </div>
+        <div class="exception-details hidden">
+            <span th:text="'Failed URL: ' + ${url}"></span>
+            <span class="stack-trace">
+                <span th:remove="tag" th:text="${exception.getMessage()}"></span>
+                <span th:remove="tag" th:each="ste : ${exception.getStackTrace()}" th:text="${ste}"></span>
+            </span>
+        </div>
+    </div>
+    <footer th:replace="footer :: footer"></footer>
+</body>
+</html>

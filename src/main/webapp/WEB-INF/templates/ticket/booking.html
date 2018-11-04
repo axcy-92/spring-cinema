@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/resources/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/resources/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <title>Spring Cinema</title>
+</head>
+<body>
+    <nav th:replace="header :: header"></nav>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Booking tickets</h1>
+        </div>
+        <form role="form" th:action="@{/booking}" method="POST" data-toggle="validator">
+            <div class="form-group">
+                <label for="eventId">Select event:</label>
+                <select class="form-control" id="eventId" name="eventId">
+                    <option th:value="${event.id}" th:each="event : ${eventList}">
+                        <p th:text="${event.name}">-</p>
+                    </option>
+                </select>
+            </div>
+            <div sec:authorize="hasRole('BOOKING_MANAGER')" class="form-group">
+                <label for="eventId">Select user:</label>
+                <select class="form-control" id="userId" name="userId">
+                    <option th:value="${user.id}" th:each="user : ${userList}">
+                        <p th:text="${user.name}">-</p>
+                    </option>
+                </select>
+            </div>
+            <div sec:authorize="!hasRole('BOOKING_MANAGER')" class="form-group">
+                <input id="userId" name="userId" type="hidden" th:if="${userId}" th:value="${userId}"/>
+            </div>
+            <div class="form-group">
+                <label for="eventId">Seat:</label>
+                <input type="number" class="form-control" pattern="/^\d+$/" required="required" name="seat-number"/>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-inverse" onclick="window.history.back()">Back</button>
+        </form>
+    </div>
+    <hr/>
+    <footer th:replace="footer :: footer"></footer>
+</body>
+</html>
