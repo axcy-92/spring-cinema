@@ -10,8 +10,8 @@
 
     <properties>
         <jdk.version>1.8</jdk.version>
-        <spring.version>4.3.17.RELEASE</spring.version>
-        <spring.security.version>4.1.1.RELEASE</spring.security.version>
+        <spring.version>4.3.18.RELEASE</spring.version>
+        <spring.security.version>4.1.5.RELEASE</spring.security.version>
         <thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
     </properties>
 
